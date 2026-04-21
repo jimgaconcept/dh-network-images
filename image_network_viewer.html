@@ -385,7 +385,6 @@
       document.getElementById('status').textContent = `Edges loaded: ${loadedEdges.length}.`;
       if (loadedNodes && loadedEdges) renderGraph({nodes: loadedNodes, links: loadedEdges});
     });
-    });
 
     document.getElementById('labelToggle').addEventListener('change', (e) => {
       labelG.style('display', e.target.checked ? null : 'none');
