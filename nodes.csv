@@ -1,29 +1,29 @@
-﻿Id,Label,Category,image_url,type,date,location,description
-lp_1.jpg,The Fortune Teller,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/lp_1.jpg,painting,Mid-18th century,Italy,Depicts a Neapolitan femmenella telling a girl her fortune
-lp_2.jpg,Le Ore (The Hours),image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/lp_2.jpg,photograph,1975,Italy,"Depicts an androgynous figure holding an owl and a tarot card, draped in fabric"
-lp_3.jpg,The Phoenix,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/lp_3.jpg,sculpture,1980,Italy,Sculpture titled The Phoenix
-lp_4.jpg,Contessa (Countess),image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/lp_4.jpg,multimedia painting,1963,Italy,Abstract painting with teeth and splatters evoking blood and bodily violence
-lp_5.jpg,Romina Cecconi's Wedding,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/lp_5.jpg,photograph,1977,Italy,"Photograph documenting the marriage of Romina Cecconi, one of the first Italian trans women to undergo surgery"
-gj_1.jpg,Flower Goddess,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/gj_1.png,digital artwork,2025,South Africa,Stylized portrait of a woman surrounded by flowers and warm tones
-gj_2.jpg,The Cyber Eye,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/gj_2.png,digital artwork,2025,Italy,Digital collage merging a human face with mechanical elements and text
-gj_3.jpg,Keep Smiling,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/gj_3.png,digital artwork,2025,USA,Portrait featuring decorative elements and stylized facial features
-gj_4.jpg,Nails of Resistance,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/gj_4.png,digital artwork,2025,Germany,Street photograph of a man with nail-like elements embedded in his body
-gj_5.jpg,Identity,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/gj_5.png,digital artwork,2026,Nigeria,Surreal portrait of a detached human head placed on a surface
-jg_1.jpg,Border Landscape,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/jg_1.jpg,photograph,,USA,Photograph of the Rio Grande channel with painted political imagery
-jg_2.jpg,Nightclub Wall,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/jg_2.jpg,photograph,,Mexico,Wall mural depicting figures associated with nightlife and performance
-jg_3.jpg,La Equis Mural,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/jg_3.jpg,photograph,,Mexico,Mural featuring symbolic imagery of Mexican identity
-jg_4.jpg,Migration Scene,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/jg_4.jpg,photograph,,Mexico,Mural depicting migration and border enforcement imagery
-jg_5.jpg,Zoot Suit Figure,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/jg_5.jpg,photograph,,Mexico,Graffiti depicting a pachuco figure in zoot suit style
-az_1.jpg,An Allegory of Passion,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/az_1.jpg,painting,1532–1536,,Painting of a rider symbolizing desire and movement
-az_2.jpg,Cherokee Syllabary,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/az_2.jpg,photograph,,USA,Photograph of the Cherokee syllabary system
-az_3.jpg,Tiger Mask Protection,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/az_3.jpg,photograph,2023,India,Image of a person wearing a mask to prevent attacks
-az_4.jpg,Hunminjeongeum Page,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/az_4.jpg,photograph,1446,Korea,Historical document introducing the Korean alphabet
-az_5.jpg,Wish Tree,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/az_5.jpg,photograph,2026,USA,Installation where participants attach written wishes to tree branches
-em_1.jpg,Bohemian Rhapsody Concert,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/em_1.jpg,photograph,2019,USA,Photograph of a live music concert performance
-em_2.jpg,Frida Kahlo Wall,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/em_2.jpg,photograph,2025,Mexico,Photograph of a wall featuring imagery or references to Frida Kahlo
-em_3.jpg,Guerrilla Girls Stickers,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/em_3.jpg,photograph,2024,USA,Photograph of Guerrilla Girls stickers in an urban setting
-em_4.jpg,Kathe Kollwitz Etchings,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/em_4.jpg,photograph,2024,USA,Photograph of displayed etchings by Käthe Kollwitz
-em_5.jpg,Elderly Home,image,https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/em_5.jpg,photograph,2025,China,Photograph of an elderly care home environment
+Id,Label,Category,image_url,type,date,location,description
+lp_1.jpg,The Fortune Teller,image,lp_1.jpg,painting,Mid-18th century,Italy,Depicts a Neapolitan femmenella telling a girl her fortune
+lp_2.jpg,Le Ore (The Hours),image,lp_2.jpg,photograph,1975,Italy,"Depicts an androgynous figure holding an owl and a tarot card, draped in fabric"
+lp_3.jpg,The Phoenix,image,lp_3.jpg,sculpture,1980,Italy,Sculpture titled The Phoenix
+lp_4.jpg,Contessa (Countess),image,lp_4.jpg,multimedia painting,1963,Italy,Abstract painting with teeth and splatters evoking blood and bodily violence
+lp_5.jpg,Romina Cecconi's Wedding,image,lp_5.jpg,photograph,1977,Italy,"Photograph documenting the marriage of Romina Cecconi, one of the first Italian trans women to undergo surgery"
+gj_1.jpg,Flower Goddess,image,gj_1.png,digital artwork,2025,South Africa,Stylized portrait of a woman surrounded by flowers and warm tones
+gj_2.jpg,The Cyber Eye,image,gj_2.png,digital artwork,2025,Italy,Digital collage merging a human face with mechanical elements and text
+gj_3.jpg,Keep Smiling,image,gj_3.png,digital artwork,2025,USA,Portrait featuring decorative elements and stylized facial features
+gj_4.jpg,Nails of Resistance,image,gj_4.png,digital artwork,2025,Germany,Street photograph of a man with nail-like elements embedded in his body
+gj_5.jpg,Identity,image,gj_5.png,digital artwork,2026,Nigeria,Surreal portrait of a detached human head placed on a surface
+jg_1.jpg,Border Landscape,image,jg_1.jpg,photograph,,USA,Photograph of the Rio Grande channel with painted political imagery
+jg_2.jpg,Nightclub Wall,image,jg_2.jpg,photograph,,Mexico,Wall mural depicting figures associated with nightlife and performance
+jg_3.jpg,La Equis Mural,image,jg_3.jpg,photograph,,Mexico,Mural featuring symbolic imagery of Mexican identity
+jg_4.jpg,Migration Scene,image,jg_4.jpg,photograph,,Mexico,Mural depicting migration and border enforcement imagery
+jg_5.jpg,Zoot Suit Figure,image,jg_5.jpg,photograph,,Mexico,Graffiti depicting a pachuco figure in zoot suit style
+az_1.jpg,An Allegory of Passion,image,az_1.jpg,painting,1532–1536,,Painting of a rider symbolizing desire and movement
+az_2.jpg,Cherokee Syllabary,image,az_2.jpg,photograph,,USA,Photograph of the Cherokee syllabary system
+az_3.jpg,Tiger Mask Protection,image,az_3.jpg,photograph,2023,India,Image of a person wearing a mask to prevent attacks
+az_4.jpg,Hunminjeongeum Page,image,az_4.jpg,photograph,1446,Korea,Historical document introducing the Korean alphabet
+az_5.jpg,Wish Tree,image,az_5.jpg,photograph,2026,USA,Installation where participants attach written wishes to tree branches
+em_1.jpg,Bohemian Rhapsody Concert,image,em_1.jpg,photograph,2019,USA,Photograph of a live music concert performance
+em_2.jpg,Frida Kahlo Wall,image,em_2.jpg,photograph,2025,Mexico,Photograph of a wall featuring imagery or references to Frida Kahlo
+em_3.jpg,Guerrilla Girls Stickers,image,em_3.jpg,photograph,2024,USA,Photograph of Guerrilla Girls stickers in an urban setting
+em_4.jpg,Kathe Kollwitz Etchings,image,em_4.jpg,photograph,2024,USA,Photograph of displayed etchings by Käthe Kollwitz
+em_5.jpg,Elderly Home,image,em_5.jpg,photograph,2025,China,Photograph of an elderly care home environment
 fetish,fetish,tag,,,,,
 desire,desire,tag,,,,,
 identity,identity,tag,,,,,
