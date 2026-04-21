@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Network Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --line: #d8dde5;
+      --text: #222;
+      --muted: #666;
+      --tag: #1b9e77;
+      --location: #7570b3;
+      --date: #e7298a;
+      --type: #66a61e;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    .app {
+      display: grid;
+      grid-template-columns: minmax(860px, 1fr) 360px;
+      gap: 16px;
+      padding: 16px;
+      height: 100vh;
+    }
+    .viz {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .toolbar {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      background: rgba(255,255,255,.95);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .toolbar input[type="search"] {
+      width: 220px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .toolbar button, .toolbar label.upload {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .toolbar input[type="file"] { display: none; }
+    .toolbar .status {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+    .toolbar .check { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }
+    svg { width: 100%; height: 100%; display: block; }
+    .legend {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 10;
+      background: rgba(255,255,255,.95);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 12px;
+      display: grid;
+      gap: 6px;
+    }
+    .legend .item { display: flex; align-items: center; gap: 8px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      overflow: auto;
+    }
+    .panel h2 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+    .panel img {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      margin: 10px 0 12px;
+      background: #fafafa;
+    }
+    .hint { color: var(--muted); font-size: 14px; }
+    .meta { display: grid; gap: 8px; font-size: 14px; }
+    .meta div b { display: inline-block; min-width: 76px; }
+    .link {
+      stroke: #c7ccd4;
+      stroke-opacity: 0.9;
+      stroke-width: 1.4px;
+    }
+    .node-label {
+      font-size: 12px;
+      fill: #111;
+      pointer-events: none;
+      paint-order: stroke;
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 3px;
+      stroke-linejoin: round;
+    }
+    .thumb { cursor: pointer; }
+    .thumb-ring { fill: #fff; stroke: #333; stroke-width: 1.2px; }
+    .node-circle { stroke: #fff; stroke-width: 1.5px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="viz">
+      <div class="toolbar">
+        <label class="upload">Load nodes CSV<input id="nodesFile" type="file" accept=".csv" /></label>
+        <label class="upload">Load edges CSV<input id="edgesFile" type="file" accept=".csv" /></label>
+        <button id="demoBtn">Load demo</button>
+        <input id="search" type="search" placeholder="Search image title..." />
+        <button id="resetBtn">Reset view</button>
+        <label class="check"><input id="labelToggle" type="checkbox" checked /> Show labels</label>
+        <span class="status" id="status">Load nodes and edges to begin.</span>
+      </div>
+      <svg id="chart" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="legend">
+        <div class="item"><span class="dot" style="background:#1b9e77"></span>tag</div>
+        <div class="item"><span class="dot" style="background:#7570b3"></span>location</div>
+        <div class="item"><span class="dot" style="background:#e7298a"></span>date</div>
+        <div class="item"><span class="dot" style="background:#66a61e"></span>type</div>
+        <div class="item"><span class="dot" style="background:#666"></span>image thumbnail node</div>
+      </div>
+    </div>
+    <aside class="panel" id="info">
+      <div class="hint">Only image nodes are clickable. Clicking one opens the full image and metadata here.</div>
+    </aside>
+  </div>
+
+  <script>
+    const width = 1200, height = 900;
+    const svg = d3.select('#chart');
+    const root = svg.append('g');
+    const linkG = root.append('g');
+    const nodeG = root.append('g');
+    const labelG = root.append('g');
+    const defs = svg.append('defs');
+    const colors = {
+      tag: '#1b9e77',
+      location: '#7570b3',
+      date: '#e7298a',
+      type: '#66a61e',
+      image: '#666'
+    };
+
+    let currentData = null;
+    let simulation = null;
+
+    const zoom = d3.zoom().scaleExtent([0.4, 4]).on('zoom', (event) => {
+      root.attr('transform', event.transform);
+    });
+    svg.call(zoom);
+
+    function safeId(str) {
+      return 'clip-' + String(str).replace(/[^a-zA-Z0-9_-]/g, '_');
+    }
+
+    function normalizeNode(row) {
+      return {
+        id: row.Id || row.id,
+        label: row.Label || row.label || row.Id || row.id,
+        category: (row.Category || row.category || '').trim(),
+        image_url: row.image_url || row.image || '',
+        type_meta: row.type || row.Type || '',
+        date: row.date || row.Date || '',
+        location: row.location || row.Location || '',
+        description: row.description || row.Description || '',
+        creator: row.creator || row.Creator || ''
+      };
+    }
+
+    function normalizeLink(row) {
+      return {
+        source: row.Source || row.source,
+        target: row.Target || row.target
+      };
+    }
+
+    function showInfo(d) {
+      const info = document.getElementById('info');
+      info.innerHTML = `
+        <h2>${d.label || d.id}</h2>
+        ${d.image_url ? `<img src="${d.image_url}" alt="${d.label || d.id}">` : ''}
+        <div class="meta">
+          <div><b>Creator/Artist:</b> ${d.creator || ''}</div>
+          <div><b>Type:</b> ${d.type_meta || ''}</div>
+          <div><b>Year:</b> ${d.date || ''}</div>
+          <div><b>Description:</b> ${d.description || ''}</div>
+        </div>
+      `;
+    }
+
+    function clearGraph() {
+      if (simulation) simulation.stop();
+      linkG.selectAll('*').remove();
+      nodeG.selectAll('*').remove();
+      labelG.selectAll('*').remove();
+      defs.selectAll('*').remove();
+    }
+
+    function renderGraph(data) {
+      clearGraph();
+      currentData = data;
+
+      const nodes = data.nodes.map(d => ({...d}));
+      const links = data.links.map(d => ({...d}));
+      const imageNodes = nodes.filter(d => d.category === 'image');
+      const otherNodes = nodes.filter(d => d.category !== 'image');
+
+      imageNodes.forEach(d => {
+        defs.append('clipPath')
+          .attr('id', safeId(d.id))
+          .append('circle')
+          .attr('r', 18)
+          .attr('cx', 0)
+          .attr('cy', 0);
+      });
+
+      const link = linkG.selectAll('line')
+        .data(links)
+        .join('line')
+        .attr('class', 'link');
+
+      const other = nodeG.selectAll('circle.other')
+        .data(otherNodes)
+        .join('circle')
+        .attr('class', 'node-circle other')
+        .attr('r', d => d.category === 'tag' ? 9 : 10)
+        .attr('fill', d => colors[d.category] || '#999');
+
+      const thumbs = nodeG.selectAll('g.thumb')
+        .data(imageNodes)
+        .join('g')
+        .attr('class', 'thumb')
+        .on('click', (_, d) => showInfo(d));
+
+      thumbs.append('circle')
+        .attr('class', 'thumb-ring')
+        .attr('r', 19);
+
+      thumbs.append('image')
+        .attr('href', d => d.image_url || '')
+        .attr('x', -18)
+        .attr('y', -18)
+        .attr('width', 36)
+        .attr('height', 36)
+        .attr('preserveAspectRatio', 'xMidYMid slice')
+        .attr('clip-path', d => `url(#${safeId(d.id)})`);
+
+      thumbs.append('title').text(d => d.label);
+
+      const labels = labelG.selectAll('text')
+        .data(nodes)
+        .join('text')
+        .attr('class', 'node-label')
+        .text(d => d.label);
+
+      simulation = d3.forceSimulation(nodes)
+        .force('link', d3.forceLink(links).id(d => d.id).distance(d => d.target.category === 'image' ? 115 : 88).strength(0.58))
+        .force('charge', d3.forceManyBody().strength(d => d.category === 'image' ? -270 : -145))
+        .force('center', d3.forceCenter(width / 2, height / 2))
+        .force('collide', d3.forceCollide().radius(d => d.category === 'image' ? 28 : 15))
+        .on('tick', () => {
+          link
+            .attr('x1', d => d.source.x)
+            .attr('y1', d => d.source.y)
+            .attr('x2', d => d.target.x)
+            .attr('y2', d => d.target.y);
+
+          other
+            .attr('cx', d => d.x)
+            .attr('cy', d => d.y);
+
+          thumbs.attr('transform', d => `translate(${d.x},${d.y})`);
+
+          labels
+            .attr('x', d => d.category === 'image' ? d.x + 24 : d.x + 12)
+            .attr('y', d => d.category === 'image' ? d.y + 4 : d.y + 4);
+        });
+
+      document.getElementById('status').textContent = `${nodes.length} nodes, ${links.length} edges loaded.`;
+
+      const search = document.getElementById('search');
+      search.oninput = (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        thumbs.style('opacity', d => !q || (d.label || '').toLowerCase().includes(q) ? 1 : 0.18);
+        other.style('opacity', d => !q ? 1 : 0.25);
+        labels.style('opacity', d => !q ? 1 : ((d.label || '').toLowerCase().includes(q) ? 1 : 0.15));
+        link.style('stroke-opacity', !q ? 0.9 : 0.15);
+      };
+    }
+
+    function parseCSV(file) {
+      return new Promise((resolve, reject) => {
+        Papa.parse(file, {
+          header: true,
+          skipEmptyLines: true,
+          complete: results => resolve(results.data),
+          error: err => reject(err)
+        });
+      });
+    }
+
+    async function parseCSVFromUrl(url) {
+      return new Promise((resolve, reject) => {
+        Papa.parse(url, {
+          download: true,
+          header: true,
+          skipEmptyLines: true,
+          complete: results => {
+            if (results.errors && results.errors.length) {
+              reject(results.errors[0]);
+              return;
+            }
+            resolve(results.data);
+          },
+          error: err => reject(err)
+        });
+      });
+    }
+
+    async function loadGraphFromSources(nodesSource, edgesSource, fromUrl = false) {
+      const nodeRows = fromUrl
+        ? await parseCSVFromUrl(nodesSource)
+        : await parseCSV(nodesSource);
+      const edgeRows = fromUrl
+        ? await parseCSVFromUrl(edgesSource)
+        : await parseCSV(edgesSource);
+
+      loadedNodes = nodeRows.map(normalizeNode).filter(d => d.id);
+      loadedEdges = edgeRows.map(normalizeLink).filter(d => d.source && d.target);
+      renderGraph({nodes: loadedNodes, links: loadedEdges});
+    }
+
+    let loadedNodes = null;
+    let loadedEdges = null;
+
+    document.getElementById('nodesFile').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      loadedNodes = (await parseCSV(file)).map(normalizeNode).filter(d => d.id);
+      document.getElementById('status').textContent = `Nodes loaded: ${loadedNodes.length}. Now load edges.`;
+      if (loadedNodes && loadedEdges) renderGraph({nodes: loadedNodes, links: loadedEdges});
+    });
+
+    document.getElementById('edgesFile').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      loadedEdges = (await parseCSV(file)).map(normalizeLink).filter(d => d.source && d.target);
+      document.getElementById('status').textContent = `Edges loaded: ${loadedEdges.length}.`;
+      if (loadedNodes && loadedEdges) renderGraph({nodes: loadedNodes, links: loadedEdges});
+    });
+    });
+
+    document.getElementById('labelToggle').addEventListener('change', (e) => {
+      labelG.style('display', e.target.checked ? null : 'none');
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+    });
+
+    document.getElementById('demoBtn').addEventListener('click', () => {
+      const demo = {
+        nodes: [
+          {id:'az_1.jpg', label:'An Allegory of Passion', category:'image', image_url:'https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/az_1.jpg', type_meta:'painting', date:'1532–1536', location:'Unknown', description:'Painting of a rider symbolizing desire and movement.'},
+          {id:'gj_1.png', label:'Flower Goddess', category:'image', image_url:'https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/gj_1.png', type_meta:'digital artwork', date:'2025', location:'South Africa', description:'Stylized portrait of a woman surrounded by flowers.'},
+          {id:'identity', label:'identity', category:'tag'},
+          {id:'painting', label:'painting', category:'type'},
+          {id:'South Africa', label:'South Africa', category:'location'},
+          {id:'2025', label:'2025', category:'date'}
+        ],
+        links: [
+          {source:'az_1.jpg', target:'identity'},
+          {source:'az_1.jpg', target:'painting'},
+          {source:'gj_1.png', target:'identity'},
+          {source:'gj_1.png', target:'South Africa'},
+          {source:'gj_1.png', target:'2025'}
+        ]
+      };
+      loadedNodes = demo.nodes;
+      loadedEdges = demo.links;
+      renderGraph(demo);
+    });
+
+    async function autoLoadFromUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const nodesParam = params.get('nodes');
+      const edgesParam = params.get('edges');
+      if (!nodesParam || !edgesParam) return;
+
+      try {
+        document.getElementById('status').textContent = 'Loading nodes and edges from URL parameters...';
+        await loadGraphFromSources(nodesParam, edgesParam, true);
+        document.getElementById('status').textContent = `Loaded from URL params: ${nodesParam} and ${edgesParam}`;
+      } catch (error) {
+        console.error(error);
+        document.getElementById('status').textContent = 'Failed to load CSVs from URL parameters. Check paths and serve the file over http(s).';
+      }
+    }
+
+    autoLoadFromUrlParams();
+  </script>
+</body>
+</html>
