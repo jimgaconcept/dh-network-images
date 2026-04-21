@@ -140,8 +140,8 @@
   <div class="app">
     <div class="viz">
       <div class="toolbar">
-        <label class="upload">Load nodes CSV<input id="nodesFile" type="file" accept=".csv" /></label>
-        <label class="upload">Load edges CSV<input id="edgesFile" type="file" accept=".csv" /></label>
+        <label class="upload" id="nodesUploadLabel">Load nodes CSV<input id="nodesFile" type="file" accept=".csv" /></label>
+        <label class="upload" id="edgesUploadLabel">Load edges CSV<input id="edgesFile" type="file" accept=".csv" /></label>
         <button id="demoBtn">Load demo</button>
         <input id="search" type="search" placeholder="Search image title..." />
         <button id="resetBtn">Reset view</button>
@@ -191,11 +191,25 @@
     }
 
     function normalizeNode(row) {
+      let imageUrl = (row.image_url || row.image || '').trim();
+
+      // If the CSV uses GitHub raw URLs from this same repo, convert them to a local relative path.
+      // If the CSV already uses a relative path like "az_1.jpg", it is preserved as-is.
+      if (imageUrl) {
+        try {
+          const url = new URL(imageUrl, window.location.href);
+          const filename = url.pathname.split('/').pop();
+          if (filename) imageUrl = filename;
+        } catch (e) {
+          // keep the original value when it is already a plain relative path
+        }
+      }
+
       return {
         id: row.Id || row.id,
         label: row.Label || row.label || row.Id || row.id,
         category: (row.Category || row.category || '').trim(),
-        image_url: row.image_url || row.image || '',
+        image_url: imageUrl,
         type_meta: row.type || row.Type || '',
         date: row.date || row.Date || '',
         location: row.location || row.Location || '',
@@ -385,6 +399,7 @@
       document.getElementById('status').textContent = `Edges loaded: ${loadedEdges.length}.`;
       if (loadedNodes && loadedEdges) renderGraph({nodes: loadedNodes, links: loadedEdges});
     });
+    });
 
     document.getElementById('labelToggle').addEventListener('change', (e) => {
       labelG.style('display', e.target.checked ? null : 'none');
@@ -397,8 +412,8 @@
     document.getElementById('demoBtn').addEventListener('click', () => {
       const demo = {
         nodes: [
-          {id:'az_1.jpg', label:'An Allegory of Passion', category:'image', image_url:'https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/az_1.jpg', type_meta:'painting', date:'1532–1536', location:'Unknown', description:'Painting of a rider symbolizing desire and movement.'},
-          {id:'gj_1.png', label:'Flower Goddess', category:'image', image_url:'https://raw.githubusercontent.com/jimgaconcept/dh-network-images/main/gj_1.png', type_meta:'digital artwork', date:'2025', location:'South Africa', description:'Stylized portrait of a woman surrounded by flowers.'},
+          {id:'az_1.jpg', label:'An Allegory of Passion', category:'image', image_url:'az_1.jpg', type_meta:'painting', date:'1532–1536', location:'Unknown', description:'Painting of a rider symbolizing desire and movement.'},
+          {id:'gj_1.png', label:'Flower Goddess', category:'image', image_url:'gj_1.png', type_meta:'digital artwork', date:'2025', location:'South Africa', description:'Stylized portrait of a woman surrounded by flowers.'},
           {id:'identity', label:'identity', category:'tag'},
           {id:'painting', label:'painting', category:'type'},
           {id:'South Africa', label:'South Africa', category:'location'},
@@ -422,6 +437,14 @@
       const nodesParam = params.get('nodes');
       const edgesParam = params.get('edges');
       if (!nodesParam || !edgesParam) return;
+
+      // Hide manual-load controls when data sources are supplied in the URL.
+      const nodesUploadLabel = document.getElementById('nodesUploadLabel');
+      const edgesUploadLabel = document.getElementById('edgesUploadLabel');
+      const demoBtn = document.getElementById('demoBtn');
+      if (nodesUploadLabel) nodesUploadLabel.style.display = 'none';
+      if (edgesUploadLabel) edgesUploadLabel.style.display = 'none';
+      if (demoBtn) demoBtn.style.display = 'none';
 
       try {
         document.getElementById('status').textContent = 'Loading nodes and edges from URL parameters...';
