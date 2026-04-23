@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html = r'''<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -8,16 +8,16 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <style>
     :root {
-      --bg: #f6f7f9;
-      --panel: #ffffff;
-      --line: #d8dde5;
-      --text: #222;
-      --muted: #666;
-      --tag: #1b9e77;
-      --location: #7570b3;
-      --date: #e7298a;
-      --type: #66a61e;
-      --image-ring: #6c757d;
+      --bg: #000000;
+      --panel: #0f0f10;
+      --line: #2a2a2d;
+      --text: #ffffff;
+      --muted: #cfcfcf;
+      --tag: #29c48a;
+      --location: #8b7dff;
+      --date: #ff5ec9;
+      --type: #92e25f;
+      --image-ring: #c0c0c0;
     }
 
     * { box-sizing: border-box; }
@@ -56,11 +56,12 @@
       gap: 8px;
       align-items: center;
       flex-wrap: wrap;
-      background: rgba(255,255,255,.96);
+      background: rgba(15,15,16,.95);
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,.06);
+      box-shadow: 0 3px 10px rgba(0,0,0,.35);
+      color: var(--text);
     }
 
     .toolbar input[type="search"] {
@@ -69,13 +70,21 @@
       border: 1px solid var(--line);
       border-radius: 8px;
       font-size: 14px;
+      background: #111214;
+      color: var(--text);
     }
 
-    .toolbar button, .toolbar label.upload {
+    .toolbar input[type="search"]::placeholder {
+      color: #b8b8b8;
+    }
+
+    .toolbar button,
+    .toolbar label.upload {
       padding: 8px 10px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: #fff;
+      background: #111214;
+      color: var(--text);
       cursor: pointer;
       font-size: 14px;
     }
@@ -100,7 +109,7 @@
       width: 100%;
       height: 100%;
       display: block;
-      background: #fbfcfe;
+      background: #050506;
     }
 
     .legend {
@@ -108,14 +117,15 @@
       right: 12px;
       bottom: 12px;
       z-index: 20;
-      background: rgba(255,255,255,.96);
+      background: rgba(15,15,16,.95);
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 8px 10px;
       font-size: 12px;
       display: grid;
       gap: 6px;
-      box-shadow: 0 3px 10px rgba(0,0,0,.06);
+      box-shadow: 0 3px 10px rgba(0,0,0,.35);
+      color: var(--text);
     }
 
     .legend .item {
@@ -137,12 +147,14 @@
       border-radius: 12px;
       padding: 16px;
       overflow: auto;
+      color: var(--text);
     }
 
     .panel h2 {
       margin: 0 0 8px;
       font-size: 22px;
       line-height: 1.2;
+      color: var(--text);
     }
 
     .panel img {
@@ -152,7 +164,7 @@
       border-radius: 10px;
       border: 1px solid var(--line);
       margin: 10px 0 12px;
-      background: #fafafa;
+      background: #111214;
     }
 
     .hint {
@@ -164,34 +176,35 @@
       display: grid;
       gap: 8px;
       font-size: 14px;
+      color: var(--text);
     }
 
     .meta div b {
       display: inline-block;
       min-width: 92px;
+      color: #ffffff;
     }
 
     .link {
-      stroke: #c7ccd4;
-      stroke-opacity: 0.4;
       fill: none;
+      stroke-opacity: 0.45;
     }
 
     .node-label {
-      fill: #444;
-      opacity: 0.72;
+      fill: #ffffff;
+      opacity: 0.88;
       pointer-events: none;
       paint-order: stroke;
-      stroke: rgba(255,255,255,0.94);
-      stroke-width: 3px;
+      stroke: rgba(0,0,0,0.92);
+      stroke-width: 3.5px;
       stroke-linejoin: round;
       dominant-baseline: middle;
     }
 
     .thumb { cursor: pointer; }
-    .thumb-ring { fill: #fff; stroke: #333; stroke-width: 1.2px; }
+    .thumb-ring { fill: #fff; stroke: #111; stroke-width: 1.2px; }
     .degree-ring { fill: none; stroke: var(--image-ring); }
-    .node-circle { stroke: #fff; stroke-width: 1.5px; }
+    .node-circle { stroke: #000; stroke-width: 1.5px; }
   </style>
 </head>
 <body>
@@ -210,12 +223,12 @@
       <svg id="chart" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid meet"></svg>
 
       <div class="legend">
-        <div class="item"><span class="dot" style="background:#1b9e77"></span>tag</div>
-        <div class="item"><span class="dot" style="background:#7570b3"></span>location</div>
-        <div class="item"><span class="dot" style="background:#e7298a"></span>date</div>
-        <div class="item"><span class="dot" style="background:#66a61e"></span>type</div>
-        <div class="item"><span class="dot" style="background:#666"></span>image thumbnail node</div>
-        <div class="item"><span class="dot" style="background:transparent; border:1px solid #6c757d"></span>more rings = more connections</div>
+        <div class="item"><span class="dot" style="background:#29c48a"></span>tag</div>
+        <div class="item"><span class="dot" style="background:#8b7dff"></span>location</div>
+        <div class="item"><span class="dot" style="background:#ff5ec9"></span>date</div>
+        <div class="item"><span class="dot" style="background:#92e25f"></span>type</div>
+        <div class="item"><span class="dot" style="background:#888"></span>image thumbnail node</div>
+        <div class="item"><span class="dot" style="background:transparent; border:1px solid #c0c0c0"></span>more rings = more connections</div>
       </div>
     </div>
 
@@ -236,15 +249,15 @@
     const defs = svg.append('defs');
 
     const colors = {
-      tag: '#1b9e77',
-      location: '#7570b3',
-      date: '#e7298a',
-      type: '#66a61e',
-      image: '#666'
+      tag: '#29c48a',
+      location: '#8b7dff',
+      date: '#ff5ec9',
+      type: '#92e25f',
+      image: '#888'
     };
 
     function nodeColorByCategory(category) {
-      return colors[category] || '#999';
+      return colors[category] || '#b5b5b5';
     }
 
     function edgeColorByCategory(linkDatum, nodeLookup) {
@@ -255,7 +268,7 @@
 
       if (sourceCategory && sourceCategory !== 'image') return nodeColorByCategory(sourceCategory);
       if (targetCategory && targetCategory !== 'image') return nodeColorByCategory(targetCategory);
-      return '#b8c0cc';
+      return '#8b919b';
     }
 
     let simulation = null;
@@ -268,399 +281,4 @@
     let currentLinkSel = null;
 
     const zoom = d3.zoom()
-      .scaleExtent([0.4, 4])
-      .on('zoom', (event) => root.attr('transform', event.transform));
-
-    svg.call(zoom);
-
-    function safeId(str) {
-      return 'clip-' + String(str).replace(/[^a-zA-Z0-9_-]/g, '_');
-    }
-
-    function normalizeNode(row) {
-      let imageUrl = (row.image_url || row.image || '').trim();
-
-      if (imageUrl) {
-        try {
-          const url = new URL(imageUrl, window.location.href);
-          const filename = url.pathname.split('/').pop();
-          if (filename) imageUrl = filename;
-        } catch (e) {}
-      }
-
-      return {
-        id: row.Id || row.id,
-        label: row.Label || row.label || row.Id || row.id,
-        category: (row.Category || row.category || '').trim(),
-        image_url: imageUrl,
-        type_meta: row.type || row.Type || '',
-        date: row.date || row.Date || '',
-        location: row.location || row.Location || '',
-        description: row.description || row.Description || '',
-        creator: row.creator || row.Creator || '',
-        degree: 1
-      };
-    }
-
-    function normalizeLink(row) {
-      return {
-        source: row.Source || row.source,
-        target: row.Target || row.target
-      };
-    }
-
-    function showInfo(d) {
-      const info = document.getElementById('info');
-      info.innerHTML = `
-        <h2>${d.label || d.id}</h2>
-        ${d.image_url ? `<img src="${d.image_url}" alt="${d.label || d.id}">` : ''}
-        <div class="meta">
-          <div><b>Creator/Artist:</b> ${d.creator || ''}</div>
-          <div><b>Type:</b> ${d.type_meta || ''}</div>
-          <div><b>Year:</b> ${d.date || ''}</div>
-          <div><b>Description:</b> ${d.description || ''}</div>
-          <div><b>Connections:</b> ${d.degree || 1}</div>
-        </div>
-      `;
-    }
-
-    function clearGraph() {
-      if (simulation) simulation.stop();
-      linkG.selectAll('*').remove();
-      nodeG.selectAll('*').remove();
-      labelG.selectAll('*').remove();
-      defs.selectAll('*').remove();
-      currentLabels = null;
-      currentOther = null;
-      currentThumbs = null;
-      currentLinkSel = null;
-      currentLinks = [];
-    }
-
-    function computeDegrees(nodes, links) {
-      const degreeMap = new Map(nodes.map(n => [n.id, 0]));
-      links.forEach(l => {
-        degreeMap.set(l.source, (degreeMap.get(l.source) || 0) + 1);
-        degreeMap.set(l.target, (degreeMap.get(l.target) || 0) + 1);
-      });
-      nodes.forEach(n => { n.degree = degreeMap.get(n.id) || 1; });
-    }
-
-    function baseLabelSize(d) {
-      return d.category === 'image'
-        ? Math.max(12, 10 + d.degree * 0.16)
-        : Math.max(10, 8.5 + d.degree * 0.08);
-    }
-
-    function ringCount(d) {
-      if (d.degree <= 2) return 0;
-      if (d.degree <= 4) return 1;
-      if (d.degree <= 7) return 2;
-      return 3;
-    }
-
-    function imageRadius(d) {
-      return Math.max(18, 14 + d.degree * 1.0);
-    }
-
-    function otherRadius(d) {
-      return Math.max(5, 4 + d.degree * 0.75);
-    }
-
-    function updateHoverState(activeNode) {
-      if (!currentLabels || !currentOther || !currentThumbs || !currentLinkSel) return;
-
-      if (!activeNode) {
-        currentLabels
-          .attr('font-size', d => `${baseLabelSize(d)}px`)
-          .style('fill', '#444')
-          .style('opacity', 0.82);
-
-        currentOther.style('opacity', 1);
-        currentThumbs.style('opacity', 1);
-        currentLinkSel.style('stroke-opacity', d => d.baseOpacity || 0.4);
-        return;
-      }
-
-      const neighborIds = new Set([activeNode.id]);
-      currentLinks.forEach(l => {
-        const s = typeof l.source === 'object' ? l.source.id : l.source;
-        const t = typeof l.target === 'object' ? l.target.id : l.target;
-        if (s === activeNode.id) neighborIds.add(t);
-        if (t === activeNode.id) neighborIds.add(s);
-      });
-
-      currentLabels
-        .style('opacity', d => neighborIds.has(d.id) ? 1 : 0.12)
-        .style('fill', d => d.id === activeNode.id ? '#111' : '#444')
-        .attr('font-size', d => `${d.id === activeNode.id ? baseLabelSize(d) + 7 : baseLabelSize(d)}px`);
-
-      currentOther.style('opacity', d => neighborIds.has(d.id) ? 1 : 0.18);
-      currentThumbs.style('opacity', d => neighborIds.has(d.id) ? 1 : 0.24);
-
-      currentLinkSel.style('stroke-opacity', d => {
-        const s = typeof d.source === 'object' ? d.source.id : d.source;
-        const t = typeof d.target === 'object' ? d.target.id : d.target;
-        return (s === activeNode.id || t === activeNode.id) ? 0.96 : 0.06;
-      });
-    }
-
-    function renderGraph(data) {
-      clearGraph();
-
-      const nodes = data.nodes.map(d => ({...d}));
-      const links = data.links.map(d => ({...d}));
-
-      computeDegrees(nodes, links);
-      currentLinks = links;
-
-      const imageNodes = nodes.filter(d => d.category === 'image');
-      const otherNodes = nodes.filter(d => d.category !== 'image');
-      const nodeLookup = new Map(nodes.map(n => [n.id, n]));
-
-      imageNodes.forEach(d => {
-        const radius = imageRadius(d);
-        defs.append('clipPath')
-          .attr('id', safeId(d.id))
-          .append('circle')
-          .attr('r', radius)
-          .attr('cx', 0)
-          .attr('cy', 0);
-      });
-
-      const link = linkG.selectAll('line')
-        .data(links)
-        .join('line')
-        .attr('class', 'link')
-        .attr('stroke', d => edgeColorByCategory(d, nodeLookup))
-        .attr('stroke-width', d => {
-          const s = typeof d.source === 'object' ? d.source.degree : (nodeLookup.get(d.source)?.degree || 1);
-          const t = typeof d.target === 'object' ? d.target.degree : (nodeLookup.get(d.target)?.degree || 1);
-          return Math.max(2.2, (s + t) * 0.2);
-        })
-        .each(function(d) {
-          const s = typeof d.source === 'object' ? d.source.degree : (nodeLookup.get(d.source)?.degree || 1);
-          const t = typeof d.target === 'object' ? d.target.degree : (nodeLookup.get(d.target)?.degree || 1);
-          d.baseOpacity = Math.min(0.9, 0.3 + (s + t) * 0.02);
-        })
-        .style('stroke-opacity', d => d.baseOpacity);
-
-      const other = nodeG.selectAll('circle.other')
-        .data(otherNodes)
-        .join('circle')
-        .attr('class', 'node-circle other')
-        .attr('r', d => otherRadius(d))
-        .attr('fill', d => colors[d.category] || '#999')
-        .on('mouseover', (_, d) => updateHoverState(d))
-        .on('mouseout', () => updateHoverState(null));
-
-      const thumbs = nodeG.selectAll('g.thumb')
-        .data(imageNodes)
-        .join('g')
-        .attr('class', 'thumb')
-        .on('click', (_, d) => showInfo(d))
-        .on('mouseover', (_, d) => updateHoverState(d))
-        .on('mouseout', () => updateHoverState(null));
-
-      thumbs.each(function(d) {
-        const g = d3.select(this);
-        const count = ringCount(d);
-        for (let i = count; i >= 1; i--) {
-          g.append('circle')
-            .attr('class', 'degree-ring')
-            .attr('r', imageRadius(d) + 6 * i)
-            .attr('stroke-width', Math.max(1, 0.8 + d.degree * 0.08))
-            .attr('stroke-opacity', Math.max(0.16, 0.36 - i * 0.07));
-        }
-      });
-
-      thumbs.append('circle')
-        .attr('class', 'thumb-ring')
-        .attr('r', d => imageRadius(d) + 1.4);
-
-      thumbs.append('image')
-        .attr('href', d => d.image_url || '')
-        .attr('x', d => -imageRadius(d))
-        .attr('y', d => -imageRadius(d))
-        .attr('width', d => imageRadius(d) * 2)
-        .attr('height', d => imageRadius(d) * 2)
-        .attr('preserveAspectRatio', 'xMidYMid slice')
-        .attr('clip-path', d => `url(#${safeId(d.id)})`);
-
-      thumbs.append('title').text(d => `${d.label} (${d.degree} connections)`);
-
-      const labels = labelG.selectAll('text')
-        .data(nodes)
-        .join('text')
-        .attr('class', 'node-label')
-        .attr('font-size', d => `${baseLabelSize(d)}px`)
-        .attr('text-anchor', d => d.category === 'image' ? 'middle' : 'start')
-        .text(d => d.label);
-
-      simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
-          const s = d.source.category === 'image' || d.target.category === 'image' ? 120 : 94;
-          return s + Math.min(18, ((d.source.degree || 1) + (d.target.degree || 1)) * 0.8);
-        }).strength(0.56))
-        .force('charge', d3.forceManyBody().strength(d => d.category === 'image' ? -320 - d.degree * 12 : -165 - d.degree * 6))
-        .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('collide', d3.forceCollide().radius(d => d.category === 'image' ? imageRadius(d) + 22 : otherRadius(d) + 10))
-        .on('tick', () => {
-          link
-            .attr('x1', d => d.source.x)
-            .attr('y1', d => d.source.y)
-            .attr('x2', d => d.target.x)
-            .attr('y2', d => d.target.y);
-
-          other
-            .attr('cx', d => d.x)
-            .attr('cy', d => d.y);
-
-          thumbs.attr('transform', d => `translate(${d.x},${d.y})`);
-
-          labels
-            .attr('x', d => d.category === 'image'
-              ? d.x
-              : d.x + (otherRadius(d) + 7))
-            .attr('y', d => d.category === 'image'
-              ? d.y + imageRadius(d) + 14
-              : d.y + 1);
-        });
-
-      currentLabels = labels;
-      currentOther = other;
-      currentThumbs = thumbs;
-      currentLinkSel = link;
-
-      document.getElementById('status').textContent = `${nodes.length} nodes, ${links.length} edges loaded.`;
-
-      const search = document.getElementById('search');
-      search.oninput = (e) => {
-        const q = e.target.value.trim().toLowerCase();
-        if (!q) {
-          thumbs.style('opacity', 1);
-          other.style('opacity', 1);
-          labels.style('opacity', 0.82);
-          link.style('stroke-opacity', d => d.baseOpacity || 0.4);
-          return;
-        }
-
-        thumbs.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.2);
-        other.style('opacity', 0.3);
-        labels.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.2);
-        link.style('stroke-opacity', 0.18);
-      };
-    }
-
-    function parseCSV(file) {
-      return new Promise((resolve, reject) => {
-        Papa.parse(file, {
-          header: true,
-          skipEmptyLines: true,
-          complete: results => resolve(results.data),
-          error: err => reject(err)
-        });
-      });
-    }
-
-    function parseCSVFromUrl(url) {
-      return new Promise((resolve, reject) => {
-        Papa.parse(url, {
-          download: true,
-          header: true,
-          skipEmptyLines: true,
-          complete: results => {
-            if (results.errors && results.errors.length) {
-              reject(results.errors[0]);
-              return;
-            }
-            resolve(results.data);
-          },
-          error: err => reject(err)
-        });
-      });
-    }
-
-    async function loadGraphFromSources(nodesSource, edgesSource, fromUrl = false) {
-      const nodeRows = fromUrl ? await parseCSVFromUrl(nodesSource) : await parseCSV(nodesSource);
-      const edgeRows = fromUrl ? await parseCSVFromUrl(edgesSource) : await parseCSV(edgesSource);
-
-      loadedNodes = nodeRows.map(normalizeNode).filter(d => d.id);
-      loadedEdges = edgeRows.map(normalizeLink).filter(d => d.source && d.target);
-      renderGraph({nodes: loadedNodes, links: loadedEdges});
-    }
-
-    document.getElementById('nodesFile').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      loadedNodes = (await parseCSV(file)).map(normalizeNode).filter(d => d.id);
-      document.getElementById('status').textContent = `Nodes loaded: ${loadedNodes.length}. Now load edges.`;
-      if (loadedNodes && loadedEdges) renderGraph({nodes: loadedNodes, links: loadedEdges});
-    });
-
-    document.getElementById('edgesFile').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      loadedEdges = (await parseCSV(file)).map(normalizeLink).filter(d => d.source && d.target);
-      document.getElementById('status').textContent = `Edges loaded: ${loadedEdges.length}.`;
-      if (loadedNodes && loadedEdges) renderGraph({nodes: loadedNodes, links: loadedEdges});
-    });
-
-    document.getElementById('labelToggle').addEventListener('change', (e) => {
-      labelG.style('display', e.target.checked ? null : 'none');
-    });
-
-    document.getElementById('resetBtn').addEventListener('click', () => {
-      svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
-    });
-
-    document.getElementById('demoBtn').addEventListener('click', () => {
-      const demo = {
-        nodes: [
-          {id:'az_1.jpg', label:'An Allegory of Passion', category:'image', image_url:'az_1.jpg', type_meta:'painting', date:'1532–1536', description:'Painting of a rider symbolizing desire and movement.', creator:'Hans Holbein the Younger'},
-          {id:'gj_1.png', label:'Flower Goddess', category:'image', image_url:'gj_1.png', type_meta:'digital artwork', date:'2025', description:'Stylized portrait of a woman surrounded by flowers.', creator:'Kat H.'},
-          {id:'identity', label:'identity', category:'tag'},
-          {id:'painting', label:'painting', category:'type'},
-          {id:'South Africa', label:'South Africa', category:'location'},
-          {id:'2025', label:'2025', category:'date'}
-        ],
-        links: [
-          {source:'az_1.jpg', target:'identity'},
-          {source:'az_1.jpg', target:'painting'},
-          {source:'gj_1.png', target:'identity'},
-          {source:'gj_1.png', target:'South Africa'},
-          {source:'gj_1.png', target:'2025'}
-        ]
-      };
-      loadedNodes = demo.nodes.map(normalizeNode);
-      loadedEdges = demo.links.map(normalizeLink);
-      renderGraph({nodes: loadedNodes, links: loadedEdges});
-    });
-
-    async function autoLoadFromUrlParams() {
-      const params = new URLSearchParams(window.location.search);
-      const nodesParam = params.get('nodes');
-      const edgesParam = params.get('edges');
-      if (!nodesParam || !edgesParam) return;
-
-      const nodesUploadLabel = document.getElementById('nodesUploadLabel');
-      const edgesUploadLabel = document.getElementById('edgesUploadLabel');
-      const demoBtn = document.getElementById('demoBtn');
-      if (nodesUploadLabel) nodesUploadLabel.style.display = 'none';
-      if (edgesUploadLabel) edgesUploadLabel.style.display = 'none';
-      if (demoBtn) demoBtn.style.display = 'none';
-
-      try {
-        document.getElementById('status').textContent = 'Loading nodes and edges from URL parameters...';
-        await loadGraphFromSources(nodesParam, edgesParam, true);
-        document.getElementById('status').textContent = `Loaded from URL params: ${nodesParam} and ${edgesParam}`;
-      } catch (error) {
-        console.error(error);
-        document.getElementById('status').textContent = 'Failed to load CSVs from URL parameters. Check paths and serve the file over http(s).';
-      }
-    }
-
-    autoLoadFromUrlParams();
-  </script>
-</body>
-</html>
+      .scaleExtent([0.4, 4
