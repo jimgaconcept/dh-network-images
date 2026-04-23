@@ -18,7 +18,9 @@
       --date: #e7298a;
       --type: #66a61e;
     }
+
     * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -27,13 +29,15 @@
       color: var(--text);
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
+
     .app {
       display: grid;
-      grid-template-columns: minmax(860px, 1fr) 360px;
+      grid-template-columns: minmax(880px, 1fr) 360px;
       gap: 16px;
       padding: 16px;
       height: 100vh;
     }
+
     .viz {
       position: relative;
       background: var(--panel);
@@ -41,20 +45,23 @@
       border-radius: 12px;
       overflow: hidden;
     }
+
     .toolbar {
       position: absolute;
       top: 12px;
       left: 12px;
-      z-index: 10;
+      z-index: 20;
       display: flex;
       gap: 8px;
       align-items: center;
       flex-wrap: wrap;
-      background: rgba(255,255,255,.95);
+      background: rgba(255,255,255,.96);
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.06);
     }
+
     .toolbar input[type="search"] {
       width: 220px;
       padding: 8px 10px;
@@ -62,6 +69,7 @@
       border-radius: 8px;
       font-size: 14px;
     }
+
     .toolbar button, .toolbar label.upload {
       padding: 8px 10px;
       border: 1px solid var(--line);
@@ -70,29 +78,48 @@
       cursor: pointer;
       font-size: 14px;
     }
+
     .toolbar input[type="file"] { display: none; }
+
     .toolbar .status {
       font-size: 12px;
       color: var(--muted);
       margin-left: 4px;
     }
-    .toolbar .check { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }
-    svg { width: 100%; height: 100%; display: block; }
+
+    .toolbar .check {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #fbfcfe;
+    }
+
     .legend {
       position: absolute;
       right: 12px;
       bottom: 12px;
-      z-index: 10;
-      background: rgba(255,255,255,.95);
+      z-index: 20;
+      background: rgba(255,255,255,.96);
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 8px 10px;
       font-size: 12px;
       display: grid;
       gap: 6px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.06);
     }
+
     .legend .item { display: flex; align-items: center; gap: 8px; }
     .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
     .panel {
       background: var(--panel);
       border: 1px solid var(--line);
@@ -100,11 +127,13 @@
       padding: 16px;
       overflow: auto;
     }
+
     .panel h2 {
       margin: 0 0 8px;
       font-size: 22px;
       line-height: 1.2;
     }
+
     .panel img {
       width: 100%;
       max-height: 280px;
@@ -114,23 +143,28 @@
       margin: 10px 0 12px;
       background: #fafafa;
     }
+
     .hint { color: var(--muted); font-size: 14px; }
     .meta { display: grid; gap: 8px; font-size: 14px; }
-    .meta div b { display: inline-block; min-width: 76px; }
+    .meta div b { display: inline-block; min-width: 92px; }
+
     .link {
       stroke: #c7ccd4;
-      stroke-opacity: 0.9;
-      stroke-width: 1.4px;
+      stroke-opacity: 0.45;
+      stroke-width: 1.2px;
     }
+
     .node-label {
-      font-size: 12px;
-      fill: #111;
+      fill: #444;
+      opacity: 0.7;
       pointer-events: none;
       paint-order: stroke;
-      stroke: rgba(255,255,255,0.8);
+      stroke: rgba(255,255,255,0.92);
       stroke-width: 3px;
       stroke-linejoin: round;
+      dominant-baseline: middle;
     }
+
     .thumb { cursor: pointer; }
     .thumb-ring { fill: #fff; stroke: #333; stroke-width: 1.2px; }
     .node-circle { stroke: #fff; stroke-width: 1.5px; }
@@ -148,7 +182,9 @@
         <label class="check"><input id="labelToggle" type="checkbox" checked /> Show labels</label>
         <span class="status" id="status">Load nodes and edges to begin.</span>
       </div>
+
       <svg id="chart" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid meet"></svg>
+
       <div class="legend">
         <div class="item"><span class="dot" style="background:#1b9e77"></span>tag</div>
         <div class="item"><span class="dot" style="background:#7570b3"></span>location</div>
@@ -157,19 +193,23 @@
         <div class="item"><span class="dot" style="background:#666"></span>image thumbnail node</div>
       </div>
     </div>
+
     <aside class="panel" id="info">
-      <div class="hint">Only image nodes are clickable. Clicking one opens the full image and metadata here.</div>
+      <div class="hint">Only image nodes are clickable. Click one to open the full image and metadata here.</div>
     </aside>
   </div>
 
   <script>
-    const width = 1200, height = 900;
+    const width = 1200;
+    const height = 900;
+
     const svg = d3.select('#chart');
     const root = svg.append('g');
     const linkG = root.append('g');
     const nodeG = root.append('g');
     const labelG = root.append('g');
     const defs = svg.append('defs');
+
     const colors = {
       tag: '#1b9e77',
       location: '#7570b3',
@@ -178,12 +218,19 @@
       image: '#666'
     };
 
-    let currentData = null;
     let simulation = null;
+    let loadedNodes = null;
+    let loadedEdges = null;
+    let currentLinks = [];
+    let currentLabels = null;
+    let currentOther = null;
+    let currentThumbs = null;
+    let currentLinkSel = null;
 
-    const zoom = d3.zoom().scaleExtent([0.4, 4]).on('zoom', (event) => {
-      root.attr('transform', event.transform);
-    });
+    const zoom = d3.zoom()
+      .scaleExtent([0.4, 4])
+      .on('zoom', (event) => root.attr('transform', event.transform));
+
     svg.call(zoom);
 
     function safeId(str) {
@@ -193,16 +240,12 @@
     function normalizeNode(row) {
       let imageUrl = (row.image_url || row.image || '').trim();
 
-      // If the CSV uses GitHub raw URLs from this same repo, convert them to a local relative path.
-      // If the CSV already uses a relative path like "az_1.jpg", it is preserved as-is.
       if (imageUrl) {
         try {
           const url = new URL(imageUrl, window.location.href);
           const filename = url.pathname.split('/').pop();
           if (filename) imageUrl = filename;
-        } catch (e) {
-          // keep the original value when it is already a plain relative path
-        }
+        } catch (e) {}
       }
 
       return {
@@ -214,7 +257,8 @@
         date: row.date || row.Date || '',
         location: row.location || row.Location || '',
         description: row.description || row.Description || '',
-        creator: row.creator || row.Creator || ''
+        creator: row.creator || row.Creator || '',
+        degree: 1
       };
     }
 
@@ -245,22 +289,84 @@
       nodeG.selectAll('*').remove();
       labelG.selectAll('*').remove();
       defs.selectAll('*').remove();
+      currentLabels = null;
+      currentOther = null;
+      currentThumbs = null;
+      currentLinkSel = null;
+      currentLinks = [];
+    }
+
+    function computeDegrees(nodes, links) {
+      const degreeMap = new Map(nodes.map(n => [n.id, 0]));
+      links.forEach(l => {
+        degreeMap.set(l.source, (degreeMap.get(l.source) || 0) + 1);
+        degreeMap.set(l.target, (degreeMap.get(l.target) || 0) + 1);
+      });
+      nodes.forEach(n => { n.degree = degreeMap.get(n.id) || 1; });
+    }
+
+    function baseLabelSize(d) {
+      return d.category === 'image'
+        ? Math.max(11, 9 + d.degree * 0.15)
+        : Math.max(9, 7 + d.degree * 0.12);
+    }
+
+    function updateHoverState(activeNode) {
+      if (!currentLabels || !currentOther || !currentThumbs || !currentLinkSel) return;
+
+      if (!activeNode) {
+        currentLabels
+          .attr('font-size', d => `${baseLabelSize(d)}px`)
+          .style('fill', '#444')
+          .style('opacity', 0.7);
+
+        currentOther.style('opacity', 1);
+        currentThumbs.style('opacity', 1);
+        currentLinkSel.style('stroke-opacity', 0.45);
+        return;
+      }
+
+      const neighborIds = new Set([activeNode.id]);
+      currentLinks.forEach(l => {
+        const s = typeof l.source === 'object' ? l.source.id : l.source;
+        const t = typeof l.target === 'object' ? l.target.id : l.target;
+        if (s === activeNode.id) neighborIds.add(t);
+        if (t === activeNode.id) neighborIds.add(s);
+      });
+
+      currentLabels
+        .style('opacity', d => neighborIds.has(d.id) ? 1 : 0.12)
+        .style('fill', d => d.id === activeNode.id ? '#111' : '#444')
+        .attr('font-size', d => `${d.id === activeNode.id ? baseLabelSize(d) + 7 : baseLabelSize(d)}px`);
+
+      currentOther.style('opacity', d => neighborIds.has(d.id) ? 1 : 0.18);
+      currentThumbs.style('opacity', d => neighborIds.has(d.id) ? 1 : 0.22);
+
+      currentLinkSel.style('stroke-opacity', d => {
+        const s = typeof d.source === 'object' ? d.source.id : d.source;
+        const t = typeof d.target === 'object' ? d.target.id : d.target;
+        return (s === activeNode.id || t === activeNode.id) ? 0.95 : 0.06;
+      });
     }
 
     function renderGraph(data) {
       clearGraph();
-      currentData = data;
 
       const nodes = data.nodes.map(d => ({...d}));
       const links = data.links.map(d => ({...d}));
+
+      computeDegrees(nodes, links);
+      currentLinks = links;
+
       const imageNodes = nodes.filter(d => d.category === 'image');
       const otherNodes = nodes.filter(d => d.category !== 'image');
 
       imageNodes.forEach(d => {
+        const radius = Math.max(18, 14 + d.degree * 0.7);
         defs.append('clipPath')
           .attr('id', safeId(d.id))
           .append('circle')
-          .attr('r', 18)
+          .attr('r', radius)
           .attr('cx', 0)
           .attr('cy', 0);
       });
@@ -274,25 +380,29 @@
         .data(otherNodes)
         .join('circle')
         .attr('class', 'node-circle other')
-        .attr('r', d => d.category === 'tag' ? 9 : 10)
-        .attr('fill', d => colors[d.category] || '#999');
+        .attr('r', d => Math.max(6, 4 + d.degree * 0.7))
+        .attr('fill', d => colors[d.category] || '#999')
+        .on('mouseover', (_, d) => updateHoverState(d))
+        .on('mouseout', () => updateHoverState(null));
 
       const thumbs = nodeG.selectAll('g.thumb')
         .data(imageNodes)
         .join('g')
         .attr('class', 'thumb')
-        .on('click', (_, d) => showInfo(d));
+        .on('click', (_, d) => showInfo(d))
+        .on('mouseover', (_, d) => updateHoverState(d))
+        .on('mouseout', () => updateHoverState(null));
 
       thumbs.append('circle')
         .attr('class', 'thumb-ring')
-        .attr('r', 19);
+        .attr('r', d => Math.max(18, 14 + d.degree * 0.7) + 1.4);
 
       thumbs.append('image')
         .attr('href', d => d.image_url || '')
-        .attr('x', -18)
-        .attr('y', -18)
-        .attr('width', 36)
-        .attr('height', 36)
+        .attr('x', d => -Math.max(18, 14 + d.degree * 0.7))
+        .attr('y', d => -Math.max(18, 14 + d.degree * 0.7))
+        .attr('width', d => Math.max(18, 14 + d.degree * 0.7) * 2)
+        .attr('height', d => Math.max(18, 14 + d.degree * 0.7) * 2)
         .attr('preserveAspectRatio', 'xMidYMid slice')
         .attr('clip-path', d => `url(#${safeId(d.id)})`);
 
@@ -302,13 +412,14 @@
         .data(nodes)
         .join('text')
         .attr('class', 'node-label')
+        .attr('font-size', d => `${baseLabelSize(d)}px`)
         .text(d => d.label);
 
       simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id).distance(d => d.target.category === 'image' ? 115 : 88).strength(0.58))
-        .force('charge', d3.forceManyBody().strength(d => d.category === 'image' ? -270 : -145))
+        .force('link', d3.forceLink(links).id(d => d.id).distance(d => d.source.category === 'image' || d.target.category === 'image' ? 118 : 92).strength(0.58))
+        .force('charge', d3.forceManyBody().strength(d => d.category === 'image' ? -300 - d.degree * 10 : -160 - d.degree * 5))
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('collide', d3.forceCollide().radius(d => d.category === 'image' ? 28 : 15))
+        .force('collide', d3.forceCollide().radius(d => d.category === 'image' ? Math.max(28, 22 + d.degree * 0.7) : Math.max(14, 10 + d.degree * 0.55)))
         .on('tick', () => {
           link
             .attr('x1', d => d.source.x)
@@ -323,19 +434,34 @@
           thumbs.attr('transform', d => `translate(${d.x},${d.y})`);
 
           labels
-            .attr('x', d => d.category === 'image' ? d.x + 24 : d.x + 12)
-            .attr('y', d => d.category === 'image' ? d.y + 4 : d.y + 4);
+            .attr('x', d => d.category === 'image'
+              ? d.x + (Math.max(18, 14 + d.degree * 0.7) + 8)
+              : d.x + (Math.max(6, 4 + d.degree * 0.7) + 5))
+            .attr('y', d => d.y + 1);
         });
+
+      currentLabels = labels;
+      currentOther = other;
+      currentThumbs = thumbs;
+      currentLinkSel = link;
 
       document.getElementById('status').textContent = `${nodes.length} nodes, ${links.length} edges loaded.`;
 
       const search = document.getElementById('search');
       search.oninput = (e) => {
         const q = e.target.value.trim().toLowerCase();
-        thumbs.style('opacity', d => !q || (d.label || '').toLowerCase().includes(q) ? 1 : 0.18);
-        other.style('opacity', d => !q ? 1 : 0.25);
-        labels.style('opacity', d => !q ? 1 : ((d.label || '').toLowerCase().includes(q) ? 1 : 0.15));
-        link.style('stroke-opacity', !q ? 0.9 : 0.15);
+        if (!q) {
+          thumbs.style('opacity', 1);
+          other.style('opacity', 1);
+          labels.style('opacity', 0.7);
+          link.style('stroke-opacity', 0.45);
+          return;
+        }
+
+        thumbs.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.18);
+        other.style('opacity', 0.25);
+        labels.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.15);
+        link.style('stroke-opacity', 0.08);
       };
     }
 
@@ -350,7 +476,7 @@
       });
     }
 
-    async function parseCSVFromUrl(url) {
+    function parseCSVFromUrl(url) {
       return new Promise((resolve, reject) => {
         Papa.parse(url, {
           download: true,
@@ -369,20 +495,13 @@
     }
 
     async function loadGraphFromSources(nodesSource, edgesSource, fromUrl = false) {
-      const nodeRows = fromUrl
-        ? await parseCSVFromUrl(nodesSource)
-        : await parseCSV(nodesSource);
-      const edgeRows = fromUrl
-        ? await parseCSVFromUrl(edgesSource)
-        : await parseCSV(edgesSource);
+      const nodeRows = fromUrl ? await parseCSVFromUrl(nodesSource) : await parseCSV(nodesSource);
+      const edgeRows = fromUrl ? await parseCSVFromUrl(edgesSource) : await parseCSV(edgesSource);
 
       loadedNodes = nodeRows.map(normalizeNode).filter(d => d.id);
       loadedEdges = edgeRows.map(normalizeLink).filter(d => d.source && d.target);
       renderGraph({nodes: loadedNodes, links: loadedEdges});
     }
-
-    let loadedNodes = null;
-    let loadedEdges = null;
 
     document.getElementById('nodesFile').addEventListener('change', async (e) => {
       const file = e.target.files[0];
@@ -411,8 +530,8 @@
     document.getElementById('demoBtn').addEventListener('click', () => {
       const demo = {
         nodes: [
-          {id:'az_1.jpg', label:'An Allegory of Passion', category:'image', image_url:'az_1.jpg', type_meta:'painting', date:'1532–1536', location:'Unknown', description:'Painting of a rider symbolizing desire and movement.'},
-          {id:'gj_1.png', label:'Flower Goddess', category:'image', image_url:'gj_1.png', type_meta:'digital artwork', date:'2025', location:'South Africa', description:'Stylized portrait of a woman surrounded by flowers.'},
+          {id:'az_1.jpg', label:'An Allegory of Passion', category:'image', image_url:'az_1.jpg', type_meta:'painting', date:'1532–1536', description:'Painting of a rider symbolizing desire and movement.', creator:'Hans Holbein the Younger'},
+          {id:'gj_1.png', label:'Flower Goddess', category:'image', image_url:'gj_1.png', type_meta:'digital artwork', date:'2025', description:'Stylized portrait of a woman surrounded by flowers.', creator:'Kat H.'},
           {id:'identity', label:'identity', category:'tag'},
           {id:'painting', label:'painting', category:'type'},
           {id:'South Africa', label:'South Africa', category:'location'},
@@ -426,9 +545,9 @@
           {source:'gj_1.png', target:'2025'}
         ]
       };
-      loadedNodes = demo.nodes;
-      loadedEdges = demo.links;
-      renderGraph(demo);
+      loadedNodes = demo.nodes.map(normalizeNode);
+      loadedEdges = demo.links.map(normalizeLink);
+      renderGraph({nodes: loadedNodes, links: loadedEdges});
     });
 
     async function autoLoadFromUrlParams() {
@@ -437,7 +556,6 @@
       const edgesParam = params.get('edges');
       if (!nodesParam || !edgesParam) return;
 
-      // Hide manual-load controls when data sources are supplied in the URL.
       const nodesUploadLabel = document.getElementById('nodesUploadLabel');
       const edgesUploadLabel = document.getElementById('edgesUploadLabel');
       const demoBtn = document.getElementById('demoBtn');
