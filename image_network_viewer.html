@@ -247,9 +247,11 @@
       return colors[category] || '#999';
     }
 
-    function edgeColorByCategory(linkDatum) {
-      const sourceCategory = typeof linkDatum.source === 'object' ? linkDatum.source.category : null;
-      const targetCategory = typeof linkDatum.target === 'object' ? linkDatum.target.category : null;
+    function edgeColorByCategory(linkDatum, nodeLookup) {
+      const sourceId = typeof linkDatum.source === 'object' ? linkDatum.source.id : linkDatum.source;
+      const targetId = typeof linkDatum.target === 'object' ? linkDatum.target.id : linkDatum.target;
+      const sourceCategory = (nodeLookup.get(sourceId) || {}).category;
+      const targetCategory = (nodeLookup.get(targetId) || {}).category;
 
       if (sourceCategory && sourceCategory !== 'image') return nodeColorByCategory(sourceCategory);
       if (targetCategory && targetCategory !== 'image') return nodeColorByCategory(targetCategory);
@@ -346,8 +348,8 @@
 
     function baseLabelSize(d) {
       return d.category === 'image'
-        ? Math.max(13, 11 + d.degree * 0.2)
-        : Math.max(10.5, 9 + d.degree * 0.1);
+        ? Math.max(12, 10 + d.degree * 0.16)
+        : Math.max(10, 8.5 + d.degree * 0.08);
     }
 
     function ringCount(d) {
@@ -414,6 +416,7 @@
 
       const imageNodes = nodes.filter(d => d.category === 'image');
       const otherNodes = nodes.filter(d => d.category !== 'image');
+      const nodeLookup = new Map(nodes.map(n => [n.id, n]));
 
       imageNodes.forEach(d => {
         const radius = imageRadius(d);
@@ -429,16 +432,16 @@
         .data(links)
         .join('line')
         .attr('class', 'link')
-        .attr('stroke', d => edgeColorByCategory(d))
+        .attr('stroke', d => edgeColorByCategory(d, nodeLookup))
         .attr('stroke-width', d => {
-          const s = typeof d.source === 'object' ? d.source.degree : 1;
-          const t = typeof d.target === 'object' ? d.target.degree : 1;
-          return Math.max(1.6, (s + t) * 0.16);
+          const s = typeof d.source === 'object' ? d.source.degree : (nodeLookup.get(d.source)?.degree || 1);
+          const t = typeof d.target === 'object' ? d.target.degree : (nodeLookup.get(d.target)?.degree || 1);
+          return Math.max(2.2, (s + t) * 0.2);
         })
         .each(function(d) {
-          const s = typeof d.source === 'object' ? d.source.degree : 1;
-          const t = typeof d.target === 'object' ? d.target.degree : 1;
-          d.baseOpacity = Math.min(0.82, 0.24 + (s + t) * 0.018);
+          const s = typeof d.source === 'object' ? d.source.degree : (nodeLookup.get(d.source)?.degree || 1);
+          const t = typeof d.target === 'object' ? d.target.degree : (nodeLookup.get(d.target)?.degree || 1);
+          d.baseOpacity = Math.min(0.9, 0.3 + (s + t) * 0.02);
         })
         .style('stroke-opacity', d => d.baseOpacity);
 
@@ -491,6 +494,7 @@
         .join('text')
         .attr('class', 'node-label')
         .attr('font-size', d => `${baseLabelSize(d)}px`)
+        .attr('text-anchor', d => d.category === 'image' ? 'middle' : 'start')
         .text(d => d.label);
 
       simulation = d3.forceSimulation(nodes)
@@ -516,9 +520,11 @@
 
           labels
             .attr('x', d => d.category === 'image'
-              ? d.x + (imageRadius(d) + 8)
-              : d.x + (otherRadius(d) + 5))
-            .attr('y', d => d.y + 1);
+              ? d.x
+              : d.x + (otherRadius(d) + 7))
+            .attr('y', d => d.category === 'image'
+              ? d.y + imageRadius(d) + 14
+              : d.y + 1);
         });
 
       currentLabels = labels;
@@ -542,7 +548,7 @@
         thumbs.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.2);
         other.style('opacity', 0.3);
         labels.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.2);
-        link.style('stroke-opacity', 0.12);
+        link.style('stroke-opacity', 0.18);
       };
     }
 
