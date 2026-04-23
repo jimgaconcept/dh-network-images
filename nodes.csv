@@ -1,76 +1,76 @@
-Id,Label,Category,image_url,type,date,location,description
-lp_1.jpg,The Fortune Teller,image,lp_1.jpg,painting,Mid-18th century,Italy,Depicts a Neapolitan femmenella telling a girl her fortune
-lp_2.jpg,Le Ore (The Hours),image,lp_2.jpg,photograph,1975,Italy,"Depicts an androgynous figure holding an owl and a tarot card, draped in fabric"
-lp_3.jpg,The Phoenix,image,lp_3.jpg,sculpture,1980,Italy,Sculpture titled The Phoenix
-lp_4.jpg,Contessa (Countess),image,lp_4.jpg,multimedia painting,1963,Italy,Abstract painting with teeth and splatters evoking blood and bodily violence
-lp_5.jpg,Romina Cecconi's Wedding,image,lp_5.jpg,photograph,1977,Italy,"Photograph documenting the marriage of Romina Cecconi, one of the first Italian trans women to undergo surgery"
-gj_1.jpg,Flower Goddess,image,gj_1.png,digital artwork,2025,South Africa,Stylized portrait of a woman surrounded by flowers and warm tones
-gj_2.jpg,The Cyber Eye,image,gj_2.png,digital artwork,2025,Italy,Digital collage merging a human face with mechanical elements and text
-gj_3.jpg,Keep Smiling,image,gj_3.png,digital artwork,2025,USA,Portrait featuring decorative elements and stylized facial features
-gj_4.jpg,Nails of Resistance,image,gj_4.png,digital artwork,2025,Germany,Street photograph of a man with nail-like elements embedded in his body
-gj_5.jpg,Identity,image,gj_5.png,digital artwork,2026,Nigeria,Surreal portrait of a detached human head placed on a surface
-jg_1.jpg,Border Landscape,image,jg_1.jpg,photograph,,USA,Photograph of the Rio Grande channel with painted political imagery
-jg_2.jpg,Nightclub Wall,image,jg_2.jpg,photograph,,Mexico,Wall mural depicting figures associated with nightlife and performance
-jg_3.jpg,La Equis Mural,image,jg_3.jpg,photograph,,Mexico,Mural featuring symbolic imagery of Mexican identity
-jg_4.jpg,Migration Scene,image,jg_4.jpg,photograph,,Mexico,Mural depicting migration and border enforcement imagery
-jg_5.jpg,Zoot Suit Figure,image,jg_5.jpg,photograph,,Mexico,Graffiti depicting a pachuco figure in zoot suit style
-az_1.jpg,An Allegory of Passion,image,az_1.jpg,painting,1532–1536,,Painting of a rider symbolizing desire and movement
-az_2.jpg,Cherokee Syllabary,image,az_2.jpg,photograph,,USA,Photograph of the Cherokee syllabary system
-az_3.jpg,Tiger Mask Protection,image,az_3.jpg,photograph,2023,India,Image of a person wearing a mask to prevent attacks
-az_4.jpg,Hunminjeongeum Page,image,az_4.jpg,photograph,1446,Korea,Historical document introducing the Korean alphabet
-az_5.jpg,Wish Tree,image,az_5.jpg,photograph,2026,USA,Installation where participants attach written wishes to tree branches
-em_1.jpg,Bohemian Rhapsody Concert,image,em_1.jpg,photograph,2019,USA,Photograph of a live music concert performance
-em_2.jpg,Frida Kahlo Wall,image,em_2.jpg,photograph,2025,Mexico,Photograph of a wall featuring imagery or references to Frida Kahlo
-em_3.jpg,Guerrilla Girls Stickers,image,em_3.jpg,photograph,2024,USA,Photograph of Guerrilla Girls stickers in an urban setting
-em_4.jpg,Kathe Kollwitz Etchings,image,em_4.jpg,photograph,2024,USA,Photograph of displayed etchings by Käthe Kollwitz
-em_5.jpg,Elderly Home,image,em_5.jpg,photograph,2025,China,Photograph of an elderly care home environment
-fetish,fetish,tag,,,,,
-desire,desire,tag,,,,,
-identity,identity,tag,,,,,
-gender diversity,gender diversity,tag,,,,,
-transformation,transformation,tag,,,,,
-violence,violence,tag,,,,,
-black woman,black woman,tag,,,,,
-resistance,resistance,tag,,,,,
-technology,technology,tag,,,,,
-happiness,happiness,tag,,,,,
-protest,protest,tag,,,,,
-mask,mask,tag,,,,,
-migration,migration,tag,,,,,
-pleasure,pleasure,tag,,,,,
-entertainment,entertainment,tag,,,,,
-writing,writing,tag,,,,,
-survival,survival,tag,,,,,
-domesticity,domesticity,tag,,,,,
-Italy,Italy,location,,,,,
-South Africa,South Africa,location,,,,,
-USA,USA,location,,,,,
-Germany,Germany,location,,,,,
-Nigeria,Nigeria,location,,,,,
-Mexico,Mexico,location,,,,,
-Unrecorded,Unrecorded,location,,,,,
-India,India,location,,,,,
-Korea,Korea,location,,,,,
-China,China,location,,,,,
-painting,painting,type,,,,,
-documentary photograph,documentary photograph,type,,,,,
-sculpture,sculpture,type,,,,,
-mixmedia,mixmedia,type,,,,,
-digital art,digital art,type,,,,,
-grafiti,grafiti,type,,,,,
-text,text,type,,,,,
-Installation,Installation,type,,,,,
-poster,poster,type,,,,,
-etching,etching,type,,,,,
-Mid-18th century,Mid-18th century,date,,,,,
-1975,1975,date,,,,,
-1980,1980,date,,,,,
-1963,1963,date,,,,,
-1977,1977,date,,,,,
-2025,2025,date,,,,,
-2026,2026,date,,,,,
-1532–1536,1532–1536,date,,,,,
-2023,2023,date,,,,,
-1446,1446,date,,,,,
-2019,2019,date,,,,,
-2024,2024,date,,,,,
+Id,Label,Category,image_url,type,date,location,description,creator
+lp_1.jpg,The Fortune Teller,image,lp_1.jpg,painting,Mid-18th century,Italy,Depicts a Neapolitan femmenella telling a girl her fortune,Giuseppe Bonito
+lp_2.jpg,Le Ore (The Hours),image,lp_2.jpg,photograph,1975,Italy,"Depicts an androgynous figure holding an owl and a tarot card, draped in fabric",Luigi Ontani
+lp_3.jpg,The Phoenix,image,lp_3.jpg,sculpture,1980,Italy,Sculpture titled The Phoenix,Fiore de Henriquez
+lp_4.jpg,Contessa (Countess),image,lp_4.jpg,multimedia painting,1963,Italy,Abstract painting with teeth and splatters evoking blood and bodily violence,Carol Rama
+lp_5.jpg,Romina Cecconi's Wedding,image,lp_5.jpg,photograph,1977,Italy,"Photograph documenting the marriage of Romina Cecconi, one of the first Italian trans women to undergo surgery",Unknown
+gj_1.jpg,Flower Goddess,image,gj_1.png,digital artwork,2025,South Africa,Stylized portrait of a woman surrounded by flowers and warm tones,Kat H.
+gj_2.jpg,The Cyber Eye,image,gj_2.png,digital artwork,2025,Italy,Digital collage merging a human face with mechanical elements and text,Stefano Menicagli
+gj_3.jpg,Keep Smiling,image,gj_3.png,digital artwork,2025,USA,Portrait featuring decorative elements and stylized facial features,Kyle Thompson
+gj_4.jpg,Nails of Resistance,image,gj_4.png,digital artwork,2025,Germany,Street photograph of a man with nail-like elements embedded in his body,Wuh Ey
+gj_5.jpg,Identity,image,gj_5.png,digital artwork,2026,Nigeria,Surreal portrait of a detached human head placed on a surface,David Zinyama
+jg_1.jpg,Border Landscape,image,jg_1.jpg,photograph,,USA,Photograph of the Rio Grande channel with painted political imagery,Unknown
+jg_2.jpg,Nightclub Wall,image,jg_2.jpg,photograph,,Mexico,Wall mural depicting figures associated with nightlife and performance,Unknown
+jg_3.jpg,La Equis Mural,image,jg_3.jpg,photograph,,Mexico,Mural featuring symbolic imagery of Mexican identity,Unknown
+jg_4.jpg,Migration Scene,image,jg_4.jpg,photograph,,Mexico,Mural depicting migration and border enforcement imagery,Unknown
+jg_5.jpg,Zoot Suit Figure,image,jg_5.jpg,photograph,,Mexico,Graffiti depicting a pachuco figure in zoot suit style,Unknown
+az_1.jpg,An Allegory of Passion,image,az_1.jpg,painting,1532–1536,,Painting of a rider symbolizing desire and movement,Hans Holbein the Younger
+az_2.jpg,Cherokee Syllabary,image,az_2.jpg,photograph,,USA,Photograph of the Cherokee syllabary system,Unknown
+az_3.jpg,Tiger Mask Protection,image,az_3.jpg,photograph,2023,India,Image of a person wearing a mask to prevent attacks,Unknown
+az_4.jpg,Hunminjeongeum Page,image,az_4.jpg,photograph,1446,Korea,Historical document introducing the Korean alphabet,Unknown
+az_5.jpg,Wish Tree,image,az_5.jpg,photograph,2026,USA,Installation where participants attach written wishes to tree branches,Unknown
+em_1.jpg,Bohemian Rhapsody Concert,image,em_1.jpg,photograph,2019,USA,Photograph of a live music concert performance,Unknown
+em_2.jpg,Frida Kahlo Wall,image,em_2.jpg,photograph,2025,Mexico,Photograph of a wall featuring imagery or references to Frida Kahlo,Unknown
+em_3.jpg,Guerrilla Girls Stickers,image,em_3.jpg,photograph,2024,USA,Photograph of Guerrilla Girls stickers in an urban setting,Unknown
+em_4.jpg,Kathe Kollwitz Etchings,image,em_4.jpg,photograph,2024,USA,Photograph of displayed etchings by Käthe Kollwitz,Unknown
+em_5.jpg,Elderly Home,image,em_5.jpg,photograph,2025,China,Photograph of an elderly care home environment,Unknown
+fetish,fetish,tag,,,,,,
+desire,desire,tag,,,,,,
+identity,identity,tag,,,,,,
+gender diversity,gender diversity,tag,,,,,,
+transformation,transformation,tag,,,,,,
+violence,violence,tag,,,,,,
+black woman,black woman,tag,,,,,,
+resistance,resistance,tag,,,,,,
+technology,technology,tag,,,,,,
+happiness,happiness,tag,,,,,,
+protest,protest,tag,,,,,,
+mask,mask,tag,,,,,,
+migration,migration,tag,,,,,,
+pleasure,pleasure,tag,,,,,,
+entertainment,entertainment,tag,,,,,,
+writing,writing,tag,,,,,,
+survival,survival,tag,,,,,,
+domesticity,domesticity,tag,,,,,,
+Italy,Italy,location,,,,,,
+South Africa,South Africa,location,,,,,,
+USA,USA,location,,,,,,
+Germany,Germany,location,,,,,,
+Nigeria,Nigeria,location,,,,,,
+Mexico,Mexico,location,,,,,,
+Unrecorded,Unrecorded,location,,,,,,
+India,India,location,,,,,,
+Korea,Korea,location,,,,,,
+China,China,location,,,,,,
+painting,painting,type,,,,,,
+documentary photograph,documentary photograph,type,,,,,,
+sculpture,sculpture,type,,,,,,
+mixmedia,mixmedia,type,,,,,,
+digital art,digital art,type,,,,,,
+grafiti,grafiti,type,,,,,,
+text,text,type,,,,,,
+Installation,Installation,type,,,,,,
+poster,poster,type,,,,,,
+etching,etching,type,,,,,,
+Mid-18th century,Mid-18th century,date,,,,,,
+1975,1975,date,,,,,,
+1980,1980,date,,,,,,
+1963,1963,date,,,,,,
+1977,1977,date,,,,,,
+2025,2025,date,,,,,,
+2026,2026,date,,,,,,
+1532–1536,1532–1536,date,,,,,,
+2023,2023,date,,,,,,
+1446,1446,date,,,,,,
+2019,2019,date,,,,,,
+2024,2024,date,,,,,,
