@@ -243,6 +243,19 @@
       image: '#666'
     };
 
+    function nodeColorByCategory(category) {
+      return colors[category] || '#999';
+    }
+
+    function edgeColorByCategory(linkDatum) {
+      const sourceCategory = typeof linkDatum.source === 'object' ? linkDatum.source.category : null;
+      const targetCategory = typeof linkDatum.target === 'object' ? linkDatum.target.category : null;
+
+      if (sourceCategory && sourceCategory !== 'image') return nodeColorByCategory(sourceCategory);
+      if (targetCategory && targetCategory !== 'image') return nodeColorByCategory(targetCategory);
+      return '#b8c0cc';
+    }
+
     let simulation = null;
     let loadedNodes = null;
     let loadedEdges = null;
@@ -333,8 +346,8 @@
 
     function baseLabelSize(d) {
       return d.category === 'image'
-        ? Math.max(11, 9 + d.degree * 0.18)
-        : Math.max(8, 7 + d.degree * 0.08);
+        ? Math.max(13, 11 + d.degree * 0.2)
+        : Math.max(10.5, 9 + d.degree * 0.1);
     }
 
     function ringCount(d) {
@@ -359,7 +372,7 @@
         currentLabels
           .attr('font-size', d => `${baseLabelSize(d)}px`)
           .style('fill', '#444')
-          .style('opacity', 0.72);
+          .style('opacity', 0.82);
 
         currentOther.style('opacity', 1);
         currentThumbs.style('opacity', 1);
@@ -416,15 +429,16 @@
         .data(links)
         .join('line')
         .attr('class', 'link')
+        .attr('stroke', d => edgeColorByCategory(d))
         .attr('stroke-width', d => {
           const s = typeof d.source === 'object' ? d.source.degree : 1;
           const t = typeof d.target === 'object' ? d.target.degree : 1;
-          return Math.max(1, (s + t) * 0.14);
+          return Math.max(1.6, (s + t) * 0.16);
         })
         .each(function(d) {
           const s = typeof d.source === 'object' ? d.source.degree : 1;
           const t = typeof d.target === 'object' ? d.target.degree : 1;
-          d.baseOpacity = Math.min(0.88, 0.18 + (s + t) * 0.02);
+          d.baseOpacity = Math.min(0.82, 0.24 + (s + t) * 0.018);
         })
         .style('stroke-opacity', d => d.baseOpacity);
 
@@ -520,15 +534,15 @@
         if (!q) {
           thumbs.style('opacity', 1);
           other.style('opacity', 1);
-          labels.style('opacity', 0.72);
+          labels.style('opacity', 0.82);
           link.style('stroke-opacity', d => d.baseOpacity || 0.4);
           return;
         }
 
-        thumbs.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.18);
-        other.style('opacity', 0.25);
-        labels.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.15);
-        link.style('stroke-opacity', 0.08);
+        thumbs.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.2);
+        other.style('opacity', 0.3);
+        labels.style('opacity', d => (d.label || '').toLowerCase().includes(q) ? 1 : 0.2);
+        link.style('stroke-opacity', 0.12);
       };
     }
 
